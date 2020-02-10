@@ -4,13 +4,11 @@
 #
 # Добавлен козырь
 
-
 import random
 
 import copy
 
 import re
-
 
 
 class Durak:
@@ -25,16 +23,11 @@ class Durak:
 
         self.table = []
 
-
-
-
     def all_cards(self):  # генерирует все существующие карты в колоде. выход: целая колода (36 карт)
 
         self.card_type = [['6', 1], ['7', 2], ['8', 3], ['9', 4], ['10', 5], ['valet', 6], ['dama', 7], ['korol', 8],
 
                           ['tuz', 9]]  # self.card_type[i][1] - "сила" карты
-
-
 
         self.spades = copy.deepcopy(self.card_type)
 
@@ -42,23 +35,17 @@ class Durak:
 
             self.spades[i][0] = self.spades[i][0] + '_piki'
 
-
-
         self.club = copy.deepcopy(self.card_type)
 
         for i in range(len(self.club)):
 
             self.club[i][0] = self.club[i][0] + '_kresti'
 
-
-
         self.hearts = copy.deepcopy(self.card_type)
 
         for i in range(len(self.hearts)):
 
             self.hearts[i][0] = self.hearts[i][0] + '_chervi'
-
-
 
         self.diamonds = copy.deepcopy(self.card_type)
 
@@ -73,23 +60,19 @@ class Durak:
         return self.cards
 
 
-
     def gen_cards(self):
 
         # раздает карты, не больше 6 в начальной руке. выход: два списка с уникальными картами у каждого игрока
-
-
 
         self.player_cards = []
 
         for card in range(6):
 
-            player_card = random.choice(self.cards)  # random.choice - возвращает случайный элемент списка
+            player_card = random.choice(self.cards)
 
             self.player_cards.append(player_card)  # добавляет в список игрока(в руку игрока) карту
 
             self.cards.remove(player_card)  # удаляет из общего числа карт сгенерированную карту
-
 
 
         self.comp_cards = []
@@ -103,12 +86,9 @@ class Durak:
             self.cards.remove(comp_card)
 
 
-
         return print('Ваши карты: ', list((item[0] for item in self.player_cards))), print('Карты помпьютера: ', list(
 
             (item[0] for item in self.comp_cards))), print('Козырь: ', self.get_mast(Durak, self.kozyr[0]))
-
-
 
     def gen_kozyr_list(self):  # пересоздает список с картами, имеющие масть козыря, изменяя силу карт
 
@@ -128,8 +108,6 @@ class Durak:
 
         return self.cards
 
-
-
     def get_mast(self, card):  # узнает масть карты
 
         new_list = card.rsplit('_')
@@ -137,7 +115,6 @@ class Durak:
         self.mast = new_list[1]
 
         return self.mast
-
 
 
     def whos_first_turn(self):
@@ -161,7 +138,6 @@ class Durak:
             self.comp_turn(Durak)
 
 
-
     def game_start(self):
 
         self.table = []
@@ -171,7 +147,6 @@ class Durak:
         self.gen_cards(Durak)
 
         self.whos_first_turn(Durak)
-
 
 
 
@@ -193,6 +168,8 @@ class Durak:
 
             self.player_turn(Durak)
 
+
+
         else:
 
             c_avble_cards_to_beat = []  # список с картами из руки, которыми можно побить
@@ -206,7 +183,6 @@ class Durak:
                 changed_table[i][0] = self.get_mast(Durak, changed_table[i][0])
 
 
-
             for i in range(len(self.comp_cards)):
 
                 if (self.get_mast(Durak, self.comp_cards[i][0]) == changed_table[0][0] or self.get_mast(Durak,
@@ -216,8 +192,6 @@ class Durak:
                     c_avble_cards_to_beat.append(self.comp_cards[i])
 
                     # создается список с картами, которыми комп может побить
-
-
 
             if len(c_avble_cards_to_beat) > 0:
 
@@ -240,7 +214,9 @@ class Durak:
                 self.comp_turn(Durak)
 
 
-            elif len(c_avble_cards_to_beat) == 0 and self.turn:  # если список с доступными картами пустой, то компьютер берет карту
+            elif len(c_avble_cards_to_beat) == 0 and self.turn:
+
+                # если список с доступными картами пустой, то компьютер берет карту
 
                 print('Компьютер берет карту ')
 
@@ -252,17 +228,9 @@ class Durak:
 
                 self.player_turn(Durak)
 
-            if len(self.comp_cards) == 0 and len(self.player_cards) > 0:
-                print('Компьютер победил!')
-            elif len(self.comp_cards) > 0 and len(self.player_cards) == 0:
-                print('Вы победили!')
-
-
-            self.player_turn(Durak)
-
-
 
     def player_turn(self):
+
         if len(self.comp_cards) > 0 and len(self.player_cards) > 0 and self.turn and len(self.table) == 0:
 
             print("-------Ваш ход-------")
@@ -293,9 +261,9 @@ class Durak:
 
                         print('Карты помпьютера: ', list((item[0] for item in self.comp_cards)))
 
-            self.turn = False
-            self.comp_turn(Durak)
+            # self.turn = False
 
+            self.comp_turn(Durak)
 
 
         elif len(self.player_cards) > 0 and self.turn == False and len(self.table) != 0:
@@ -309,7 +277,6 @@ class Durak:
             for i in range(len(changed_table)):
 
                 changed_table[i][0] = self.get_mast(Durak, changed_table[i][0])
-
 
 
             for i in range(len(self.player_cards)):
@@ -336,11 +303,12 @@ class Durak:
 
                 print('Ваши карты', list((item[0] for item in self.player_cards)))
 
-                # self.turn = False
+                self.turn = False
 
                 self.comp_turn(Durak)
 
-            else:
+
+            elif len(avble_player_cards) > 0 and self.turn == False:
 
                 bool_card = ""
 
@@ -370,18 +338,11 @@ class Durak:
 
                             break
 
-
-            if len(self.comp_cards) == 0 and len(self.player_cards) > 0:
-                print('Компьютер победил!')
-            elif len(self.comp_cards) > 0 and len(self.player_cards) == 0:
-                print('Вы победили!')
                 self.turn = True
+
                 self.player_turn(Durak)
-
-
 
 
 Durak.all_cards(Durak)
 
 Durak.game_start(Durak)
-
